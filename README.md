@@ -136,7 +136,7 @@ We have tested the extension on --
 Most likely, the extension will work with other TestComplete and VLC versions.
 
 # Contacts and Feedback
-To learn more about the extension, please visit the **[TestComplete Community](https://community.smartbear.com/t5/TestComplete/ct-p/TestComplete_forum)** forum.
+To learn more about the extension, please visit the **[TestComplete Community](https://community.smartbear.com/t5/TestComplete-General-Discussions/Recording-Test-Execution-is-Easy/m-p/156365#M28852)** forum.
 
 Do not hesitate to send your questions, comments, bug reports and suggestions to the forum. We appreciate any feedback. 
 
