@@ -73,25 +73,34 @@ function RecorderInfo() {
     return result;
   };
 
-  function getRegistryValue(name, defaultValue) {
-    var bitPrefix = Sys.OSInfo.Windows64bit ? "Wow6432Node\\" : "";
-    var path = aqString.Format("HKEY_LOCAL_MACHINE\\SOFTWARE\\%s%s", bitPrefix, name);
-    var result = defaultValue;
-
-    try {
-      result = WshShell.RegRead(path);
-    }
-    catch (ignore) {
-    }
-    return result;
+  function getRegistryValue(name) {
+      try {
+        var path = "HKEY_LOCAL_MACHINE\\SOFTWARE\\" + name;
+        return WshShell.RegRead(path);
+      }
+      catch (ignore) {
+        var path = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\" + name;
+        return WshShell.RegRead(path);
+      }  
   }
 
   this.isInstalled = function () {
-    return getRegistryValue("VideoLan\\", "novalue") !== "novalue";
+	try {
+		getRegistryValue("VideoLan\\");
+		return true;
+	}
+	catch (ignore) {
+		return false;
+	}
   };
 
   this.getPath = function () {
-    return getRegistryValue("VideoLAN\\VLC\\InstallDir") + "\\" + this.getProcessName() + ".exe";
+	try {
+        return getRegistryValue("VideoLAN\\VLC\\InstallDir") + "\\" + this.getProcessName() + ".exe";
+    }  
+	catch (ignore) {
+		return "";
+	}
   };
 }
 
