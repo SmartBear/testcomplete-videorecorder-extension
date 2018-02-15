@@ -208,10 +208,13 @@ function RecorderEngine() {
   }
 
   function getStartCommandArgs() {
-    return "--one-instance screen:// -I dummy :screen-fps=" + _settings.fps +
+    var _height = Sys.Desktop.Height;
+	var _width = Sys.Desktop.Width;
+	return "--one-instance screen:// -I dummy :screen-fps=" + _settings.fps +
       " :screen-follow-mouse :screen-mouse-image=" + "\"" + _cursorFile.getPath() + "\"" +
-      " :no-sound :sout=#transcode{vcodec=h264,vb=" + _settings.quality + ",fps=" + _settings.fps + ",scale=1}" +
-      ":std{access=file,dst=\"" + _videoFile.getPath() + "\"}";
+      " :no-sound :sout=#transcode{vcodec=h264,vb=" + _settings.quality + ",fps=" + _settings.fps +
+	  ",height=" + _height + ",width=" + _width +
+	  "}" + ":std{access=file,dst=\"" + _videoFile.getPath() + "\"}";
   }
 
   function runStartCommand() {
