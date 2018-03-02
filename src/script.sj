@@ -1,4 +1,4 @@
-﻿// Log messages
+// Log messages
 var logMessages = {
   recorderIsNotInstalled: {
     message: "Unable to start video recording. The VLC recorder is not installed. See Additional Info for details.",
@@ -208,13 +208,14 @@ function RecorderEngine() {
   }
 
   function getStartCommandArgs() {
-    var _height = Sys.Desktop.Height;
-	var _width = Sys.Desktop.Width;
-	return "--one-instance screen:// -I dummy :screen-fps=" + _settings.fps +
-      " :screen-follow-mouse :screen-mouse-image=" + "\"" + _cursorFile.getPath() + "\"" +
-      " :no-sound :sout=#transcode{vcodec=h264,vb=" + _settings.quality + ",fps=" + _settings.fps +
-	  ",height=" + _height + ",width=" + _width +
-	  "}" + ":std{access=file,dst=\"" + _videoFile.getPath() + "\"}";
+    // x264 encoder expects even resolution only
+    var _height = (Sys.Desktop.Height & 1) ? Sys.Desktop.Height - 1 : Sys.Desktop.Height;
+    var _width = (Sys.Desktop.Width & 1) ? Sys.Desktop.Width - 1: Sys.Desktop.Width;
+    return "--one-instance screen:// -I dummy :screen-fps=" + _settings.fps +
+           " :screen-follow-mouse :screen-mouse-image=" + "\"" + _cursorFile.getPath() + "\"" +
+           " :no-sound :sout=#transcode{vcodec=h264,vb=" + _settings.quality + ",fps=" + _settings.fps +
+	   ",height=" + _height + ",width=" + _width +
+	   "}" + ":std{access=file,dst=\"" + _videoFile.getPath() + "\"}";
   }
 
   function runStartCommand() {
