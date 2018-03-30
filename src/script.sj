@@ -1,4 +1,4 @@
-// Log messages
+﻿// Log messages
 var logMessages = {
   recorderIsNotInstalled: {
     message: "Unable to start video recording. The VLC recorder is not installed. See Additional Info for details.",
@@ -148,18 +148,29 @@ function Presets() {
 }
 
 // Creates an object that provides info on the recorded video file
-function VideoFile() {
-  var _path = (function generateVideoFilePath() {
+function VideoFile(sPath,sName) {
+    var _path = (function generateVideoFilePath() {
     var now = aqDateTime.Now();
-
     var year = aqDateTime.GetYear(now);
     var month = aqDateTime.GetMonth(now);
     var day = aqDateTime.GetDay(now);
     var hour = aqDateTime.GetHours(now);
     var minute = aqDateTime.GetMinutes(now);
     var sec = aqDateTime.GetSeconds(now);
-
-    return Log.Path + "video_" + [year, month, day, hour, minute, sec].join("-") + ".mp4";
+    var rPath;
+    if(sPath !== undefined && sPath !== "") {
+      if(sPath.substring(sPath.length -1) !== "\\") {
+        sPath += "\\";
+      }
+      if(sName !== undefined && sPath !== "") {
+        rPath = sPath + sName + ".mp4"
+      } else {
+        rPath = sPath + "video_" + [year, month, day, hour, minute, sec].join("-") + ".mp4"
+      }
+    } else {
+      rPath = Log.Path + "video_" + [year, month, day, hour, minute, sec].join("-") + ".mp4";
+    }
+    return rPath;
   })();
 
   this.getPath = function () {
@@ -244,7 +255,7 @@ function RecorderEngine() {
     return _settings.name;
   };
 
-  this.start = function (presetName) {
+  this.start = function (presetName,sPath,sName) {
     var recExists = _recorderInfo.doesProcessExist();
 
     if (recExists) {
@@ -261,7 +272,7 @@ function RecorderEngine() {
     }
 
     _settings = _presets.get(presetName);
-    _videoFile = new VideoFile();
+    _videoFile = new VideoFile(sPath,sName);
     _cursorFile = new CursorFile();
     runStartCommand();
     if (!_recorderInfo.doesProcessExist(3000) /* Wait for 3 seconds for the recorder to start */) {
@@ -348,12 +359,12 @@ function Finalize() {
 // Runtime scripting object
 //
 
-function RuntimeObject_Start(VideoQuality) {
+function RuntimeObject_Start(VideoQuality,sPath,sName) {
   if (typeof Log === "undefined") { // Check if a test is running or not (to avoid issues with Code Completion)
     return "";
   }
 
-  return gRecorderEngine.start(VideoQuality);
+  return gRecorderEngine.start(VideoQuality,sPath,sName);
 }
 
 function RuntimeObject_Stop() {
