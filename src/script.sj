@@ -1,5 +1,5 @@
 // Log messages
-var logMessages = {  
+var logMessages = {
   recorderIsNotInstalled: {
     message: "Unable to start video recording. The VLC recorder is not installed. See Additional Info for details.",
     messageEx: "<p>The video recorder uses the recording functionality of the VLC framework.<br/>Download the recorder from the following website and install it:<br/><a href='%s' target='_blank'>%s</a></p>"
@@ -256,7 +256,7 @@ function RecorderEngine() {
       var pmHigher = 300;
       var attr = Log.CreateNewAttributes();
       attr.ExtendedMessageAsPlainText = false; // HTML style formatting
-	  Log.Warning(logMessages.recorderIsNotInstalled.message, aqString.Format(logMessages.recorderIsNotInstalled.messageEx, _recorderInfo.getHomepage(), _recorderInfo.getHomepage()), pmHigher, attr);
+      Log.Warning(logMessages.recorderIsNotInstalled.message, aqString.Format(logMessages.recorderIsNotInstalled.messageEx, _recorderInfo.getHomepage(), _recorderInfo.getHomepage()), pmHigher, attr);
       return "";
     }
 
@@ -268,7 +268,7 @@ function RecorderEngine() {
       var pmHigher = 300;
       var attr = Log.CreateNewAttributes();
       attr.ExtendedMessageAsPlainText = false; // HTML style formatting
-	  Log.Warning(logMessages.startNoRecorderProcess.message, aqString.Format(logMessages.startNoRecorderProcess.messageEx, getStartCommandArgs()), pmHigher, attr);
+      Log.Warning(logMessages.startNoRecorderProcess.message, aqString.Format(logMessages.startNoRecorderProcess.messageEx, getStartCommandArgs()), pmHigher, attr);
       return "";
     }
 
@@ -318,7 +318,7 @@ function RecorderEngine() {
       var pmHigher = 300;
       var attr = Log.CreateNewAttributes();
       attr.ExtendedMessageAsPlainText = false; // HTML style formatting      
-	  Log.Warning(logMessages.recorderUnexpectedError.message, aqString.Format(logMessages.recorderUnexpectedError.messageEx, getStartCommandArgs()), pmHigher, attr);
+      Log.Warning(logMessages.recorderUnexpectedError.message, aqString.Format(logMessages.recorderUnexpectedError.messageEx, getStartCommandArgs()), pmHigher, attr);
     }
     return _videoFile.getPath();
   };
