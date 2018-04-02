@@ -1,5 +1,5 @@
 // Log messages
-var logMessages = {
+var logMessages = {  
   recorderIsNotInstalled: {
     message: "Unable to start video recording. The VLC recorder is not installed. See Additional Info for details.",
     messageEx: "<p>The video recorder uses the recording functionality of the VLC framework.<br/>Download the recorder from the following website and install it:<br/><a href='%s' target='_blank'>%s</a></p>"
@@ -10,11 +10,11 @@ var logMessages = {
   },
   startFailAlreadyStarted: {
     message: "Unable to start video recording. The VLC recorder is already running. See Additional Info for details.",
-    messageEx: "You need to stop the running instance of the VLC recorder before starting a new video recording session.\r\nIf you see the " + "%s" + ".exe process in the system, terminate it."
+    messageEx: "You need to stop the running instance of the VLC recorder before starting a new video recording session.\r\nIf you see the %s.exe process in the system, terminate it."
   },
   startNoRecorderProcess: {
     message: "Unable to start the video recorder. See Additional Info for details.",
-    messageEx: "<p>Your test failed to start the video recorder. Something is wrong in the system.<p>" +
+    messageEx: "<p>Your test failed to start the video recorder. Something is wrong in the system.</p>" +
       "<p>To get more information:</p>" +
       "<ul>" +
       "<li>Run the VLC recorder in the system. Use the following command line for this:<br/>%s</li>" +
@@ -35,7 +35,7 @@ var logMessages = {
   },
   recorderUnexpectedError: {
     message: "The video file has not been created. See Additional Info for details.",
-    messageEx: "<p>Your test failed to start the video recorder. Something is wrong in the system.<p>" +
+    messageEx: "<p>Your test failed to start the video recorder or output file path is incorrect.</p>" +
       "<p>To get more information:</p>" +
       "<ul>" +
       "<li>Run the VLC recorder in the system. Use the following command line for this:<br/>%s</li>" +
@@ -202,7 +202,7 @@ function RecorderEngine() {
   var _videoFile;
   var _cursorFile;
   var _isStarted = false;
-
+  
   function runCommand(args) {
     WshShell.Run(aqString.Format('"%s" %s', _recorderInfo.getPath(), args), 2, false);
   }
@@ -244,7 +244,7 @@ function RecorderEngine() {
     return _settings.name;
   };
 
-  this.start = function (presetName) {
+  this.start = function (presetName) {	
     var recExists = _recorderInfo.doesProcessExist();
 
     if (recExists) {
@@ -255,8 +255,8 @@ function RecorderEngine() {
     if (!_recorderInfo.isInstalled()) {
       var pmHigher = 300;
       var attr = Log.CreateNewAttributes();
-      attr.ExtendedMessageAsPlainText = false;
-      Log.Warning(logMessages.recorderIsNotInstalled.message, aqString.Format(logMessages.recorderIsNotInstalled.messageEx, _recorderInfo.getHomepage(), _recorderInfo.getHomepage()), pmHigher, attr);
+      attr.ExtendedMessageAsPlainText = false; // HTML style formatting
+	  Log.Warning(logMessages.recorderIsNotInstalled.message, aqString.Format(logMessages.recorderIsNotInstalled.messageEx, _recorderInfo.getHomepage(), _recorderInfo.getHomepage()), pmHigher, attr);
       return "";
     }
 
@@ -265,7 +265,10 @@ function RecorderEngine() {
     _cursorFile = new CursorFile();
     runStartCommand();
     if (!_recorderInfo.doesProcessExist(3000) /* Wait for 3 seconds for the recorder to start */) {
-      Log.Warning(logMessages.startNoRecorderProcess.message, aqString.Format(logMessages.startNoRecorderProcess.messageEx, _recorderInfo.getProcessName(), _recorderInfo.getPath(), getStartCommandArgs()));
+      var pmHigher = 300;
+      var attr = Log.CreateNewAttributes();
+      attr.ExtendedMessageAsPlainText = false; // HTML style formatting
+	  Log.Warning(logMessages.startNoRecorderProcess.message, aqString.Format(logMessages.startNoRecorderProcess.messageEx, getStartCommandArgs()), pmHigher, attr);
       return "";
     }
 
@@ -312,7 +315,10 @@ function RecorderEngine() {
       Log.Link(_videoFile.getPath(), logMessages.stopOk.message, aqString.Format(logMessages.stopOk.messageEx, _videoFile.getPath()));
     }
     else {
-      Log.Warning(logMessages.recorderUnexpectedError.message, aqString.Format(logMessages.recorderUnexpectedError.messageEx, _recorderInfo.getProcessName(), _recorderInfo.getPath(), getStartCommandArgs()));
+      var pmHigher = 300;
+      var attr = Log.CreateNewAttributes();
+      attr.ExtendedMessageAsPlainText = false; // HTML style formatting      
+	  Log.Warning(logMessages.recorderUnexpectedError.message, aqString.Format(logMessages.recorderUnexpectedError.messageEx, getStartCommandArgs()), pmHigher, attr);
     }
     return _videoFile.getPath();
   };
