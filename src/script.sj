@@ -162,11 +162,13 @@ function VideoFile(sPath,sName) {
       if(sPath.substring(sPath.length -1) !== "\\") {
         sPath += "\\";
       }
-      if(sName !== undefined && sPath !== "") {
+      if(sName !== undefined && sName !== "") {
         rPath = sPath + sName + ".mp4"
       } else {
         rPath = sPath + "video_" + [year, month, day, hour, minute, sec].join("-") + ".mp4"
       }
+    } else if(sName !== undefined && sName !== "") {
+      rPath = Log.Path + sName + ".mp4";
     } else {
       rPath = Log.Path + "video_" + [year, month, day, hour, minute, sec].join("-") + ".mp4";
     }
