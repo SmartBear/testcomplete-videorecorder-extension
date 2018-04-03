@@ -58,7 +58,7 @@ That's all. Now you can run your test.
 ### In Scripts
 To work with the recorder from scripts, the extension adds the `VideoRecorder` object to TestComplete. The object is available in all the supported scripting languages. 
 
-Use the `VideoRecorder.Start()` method to start recording, and `VideoRecorder.Stop()` to stop it. The `Start()` method has the _VideoQuality_ string parameter (`Start(VideoQuality)`) that specifies the quality of the recorded video. Possible values include "_Low_", "_Normal_" (default) and "_High_". The parameter is case-insensitive.
+Use the `VideoRecorder.Start()` method to start recording, and `VideoRecorder.Stop()` to stop it. The `Start()` method has the _VideoQuality_ string parameter (`Start(VideoQuality)`) that specifies the quality of the recorded video. Possible values include "_Low_", "_Normal_" (default) and "_High_". The parameter is case-insensitive. The other two parameters are also optional: sPath - an optional string path to output folder, sName - an optional file name, do not use extension.
 
 ```JavaScript
 // JavaScript example
