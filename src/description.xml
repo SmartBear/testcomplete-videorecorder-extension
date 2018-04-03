@@ -5,7 +5,7 @@
 			<Script Name="script.sj" InitRoutine="Initialize" FinalRoutine="Finalize">
 				<RuntimeObject Name="VideoRecorder" Icon="VideoStart-16.png">
 					<Method Name="Start" Routine="RuntimeObject_Start">
-						Starts a video recording session. Returns the video file name. VideoQuality = a string that specifies the video quality: "Low", "Normal" (default), or "High".
+						Starts a video recording session. Returns the video file name. VideoQuality = a string that specifies the video quality: "Low", "Normal" (default), or "High". sPath = an optional string path to output folder, sName = an optional file name, do not use extension
 					</Method>
 					<Method Name="Stop" Routine="RuntimeObject_Stop">
 						Stops the video recording session. Returns the video file name.
