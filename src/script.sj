@@ -1,4 +1,4 @@
-﻿// Log messages
+// Log messages
 var logMessages = {
   recorderIsNotInstalled: {
     message: "Unable to start video recording. The VLC recorder is not installed. See Additional Info for details.",
@@ -17,7 +17,7 @@ var logMessages = {
     messageEx: "<p>Your test failed to start the video recorder. Something is wrong in the system.</p>" +
       "<p>To get more information:</p>" +
       "<ul>" +
-      "<li>Run the VLC recorder in the system. Use the following command line for this:<br/>%s</li>" +
+      "<li>Run the VLC recorder in the system. Use the following command line for this:<br/>\"%s\" %s</li>" +
       "<li>Explore the messages in the command-line window.</li>" +
       "</ul>"
   },
@@ -38,7 +38,7 @@ var logMessages = {
     messageEx: "<p>Your test failed to start the video recorder or output file path is incorrect.</p>" +
       "<p>To get more information:</p>" +
       "<ul>" +
-      "<li>Run the VLC recorder in the system. Use the following command line for this:<br/>%s</li>" +
+      "<li>Run the VLC recorder in the system. Use the following command line for this:<br/>\"%s\" %s</li>" +
       "<li>Explore the messages in the command-line window.</li>" +
       "</ul>"
   },
@@ -226,9 +226,9 @@ function RecorderEngine() {
     var _width = (Sys.Desktop.Width & 1) ? Sys.Desktop.Width - 1: Sys.Desktop.Width;
     return "--one-instance screen:// -I dummy :screen-fps=" + _settings.fps +
            " :screen-follow-mouse :screen-mouse-image=" + "\"" + _cursorFile.getPath() + "\"" +
-           " :no-sound :sout=#transcode{vcodec=h264,vb=" + _settings.quality + ",fps=" + _settings.fps +
+           " :no-sound :sout=\"#transcode{vcodec=h264,vb=" + _settings.quality + ",fps=" + _settings.fps +
 	   ",height=" + _height + ",width=" + _width +
-	   "}" + ":std{access=file,dst=\"" + _videoFile.getPath() + "\"}";
+	   "}" + ":std{access=file,dst=\\\"" + _videoFile.getPath() + "\\\"}\"";
   }
 
   function runStartCommand() {
@@ -281,7 +281,7 @@ function RecorderEngine() {
       var pmHigher = 300;
       var attr = Log.CreateNewAttributes();
       attr.ExtendedMessageAsPlainText = false; // HTML style formatting
-      Log.Warning(logMessages.startNoRecorderProcess.message, aqString.Format(logMessages.startNoRecorderProcess.messageEx, getStartCommandArgs()), pmHigher, attr);
+      Log.Warning(logMessages.startNoRecorderProcess.message, aqString.Format(logMessages.startNoRecorderProcess.messageEx, _recorderInfo.getPath(), getStartCommandArgs()), pmHigher, attr);
       return "";
     }
 
@@ -331,7 +331,7 @@ function RecorderEngine() {
       var pmHigher = 300;
       var attr = Log.CreateNewAttributes();
       attr.ExtendedMessageAsPlainText = false; // HTML style formatting      
-      Log.Warning(logMessages.recorderUnexpectedError.message, aqString.Format(logMessages.recorderUnexpectedError.messageEx, getStartCommandArgs()), pmHigher, attr);
+      Log.Warning(logMessages.recorderUnexpectedError.message, aqString.Format(logMessages.recorderUnexpectedError.messageEx, _recorderInfo.getPath(), getStartCommandArgs()), pmHigher, attr);
     }
     return _videoFile.getPath();
   };
