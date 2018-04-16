@@ -130,8 +130,8 @@ Possible workarounds:
 
 # Supported Versions
 We have tested the extension on -- 
- * TestComplete 12.40
- * VLC media player 2.2.6
+ * TestComplete 12.40, TestComplete 12.50
+ * VLC media player 2.2.6, VLC media player 3.0.1
 
 Most likely, the extension will work with other TestComplete and VLC versions.
 
